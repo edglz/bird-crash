@@ -1,0 +1,43 @@
+/* Fixed 16:9 layout that scales with the window. Sprite crops from public/assets/sheets and hud. */
+html, body, #root { margin: 0; height: 100%; background: #111; overflow: hidden; font-family: system-ui, sans-serif; }
+
+.stage { position: relative; aspect-ratio: 16 / 9; width: min(100vw, calc(100vh * 16 / 9)); height: auto; margin: 0 auto; top: 50%; transform: translateY(-50%); }
+.canvas-host { width: 100%; height: 100%; }
+.canvas-host canvas { width: 100% !important; height: 100% !important; display: block; touch-action: none; }
+
+.hud { position: absolute; inset: 0; pointer-events: none; }
+.hud button { position: absolute; top: 8px; width: 56px; height: 56px; padding: 0; border: 0; background: none; background-size: contain; background-repeat: no-repeat; cursor: pointer; pointer-events: auto; font-size: 0; }
+.btn-pause { left: 12px; background-image: url(/assets/hud/pause.png) !important; }
+.btn-restart { right: 12px; background-image: url(/assets/hud/restart.png) !important; }
+.btn-mute { left: 70px; background-image: url(/assets/hud/sound.png) !important; }
+.btn-mute.off { opacity: .35; }
+.score { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font: bold 22px system-ui, sans-serif; color: #fff; text-shadow: 0 2px 0 #263238; pointer-events: none; }
+
+.overlay { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, .45); }
+.overlay.show { display: flex; }
+.overlay.menu { background: linear-gradient(#2a9fc4, #8fdcf0); flex-direction: column; gap: 24px; }
+
+.episode-title { width: 232px; height: 42px; background: url(/assets/sheets/level-selection-buttons.png) -298px -662px no-repeat; }
+.cards { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; max-width: 90%; }
+.card { position: relative; width: 164px; height: 164px; border: 0; padding: 0; cursor: pointer; background: url(/assets/sheets/level-selection-buttons.png) -14px -326px no-repeat; }
+.card .num { position: absolute; left: 0; right: 0; top: 40px; font: bold 46px system-ui, sans-serif; color: #fff; text-shadow: 0 2px 0 #3e5a1a; }
+.card .stars { position: absolute; left: 0; right: 0; top: 104px; display: flex; gap: 2px; justify-content: center; }
+.card .stars img { width: 26px; filter: grayscale(1) opacity(.35); }
+.card .stars img.on { filter: none; }
+.card.locked { background-position: -205px -326px; cursor: default; }
+.card.locked .num, .card.locked .stars { display: none; }
+.card.locked::after { content: ''; position: absolute; left: 50%; top: 50%; width: 46px; height: 55px; transform: translate(-50%, -50%); background: url(/assets/sheets/level-selection-buttons.png) 0 -256px / 512px 408px no-repeat; }
+
+.panel { background: #fff; padding: 24px 32px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; gap: 10px; min-width: 240px; }
+.panel h2 { margin: 0 0 8px; color: #263238; }
+.panel p { margin: 0; color: #455a64; }
+.panel button { font-size: 16px; padding: 10px 16px; border: 0; border-radius: 8px; background: #e53935; color: #fff; cursor: pointer; }
+.end-stars { display: flex; gap: 6px; justify-content: center; }
+.end-stars img { width: 56px; filter: grayscale(1) opacity(.35); }
+.end-stars img.on { filter: none; }
+
+/* Zoom: HUD buttons (.hud .x wins over .hud button) and the scrollable 30-level menu */
+.hud .zoom-btn { width: 44px; height: 44px; top: 16px; border-radius: 50%; background: rgba(255, 255, 255, .75) !important; color: #263238; font: bold 28px/44px system-ui, sans-serif; text-align: center; box-shadow: 0 2px 0 rgba(0, 0, 0, .25); }
+.hud .zoom-in { right: 16px; }
+.hud .zoom-out { right: 66px; }
+.cards { max-height: 380px; overflow-y: auto; align-content: flex-start; padding: 8px 12px; box-sizing: border-box; }

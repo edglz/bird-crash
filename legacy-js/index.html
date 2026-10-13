@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bird Crash</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #111; overflow: hidden; font-family: system-ui, sans-serif; }
+  #stage { position: relative; aspect-ratio: 16 / 9; width: min(100vw, calc(100vh * 16 / 9)); margin: auto; top: 50%; transform: translateY(-50%); }
+  canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+  .hud button { position: absolute; top: 8px; width: 56px; height: 56px; padding: 0; border: 0; background: none; background-size: contain; background-repeat: no-repeat; cursor: pointer; pointer-events: auto; font-size: 0; }
+  .hud .pause { background-image: url(assets/hud/pause.png); }
+  .hud .restart { background-image: url(assets/hud/restart.png); }
+  .hud .mute { background-image: url(assets/hud/sound.png); left: 70px; }
+  .hud .mute.off { opacity: .35; }
+  .hud button:first-child { left: 12px; }
+  .hud button:last-child { right: 12px; }
+  .overlay { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, .45); }
+  .overlay.show { display: flex; }
+  .panel { background: #fff; padding: 24px 32px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; gap: 10px; min-width: 240px; }
+  .panel h1, .panel h2 { margin: 0 0 8px; color: #263238; }
+  .panel p { margin: 0; color: #455a64; }
+  .panel button { font-size: 16px; padding: 10px 16px; border: 0; border-radius: 8px; background: #e53935; color: #fff; cursor: pointer; }
+  .panel button[hidden] { display: none; }
+  /* level menu: crops of assets/sheets/level-selection-buttons.png */
+  #menu { background: linear-gradient(#2a9fc4, #8fdcf0); }
+  .episode-title { width: 232px; height: 42px; margin: 0 auto; background: url(assets/sheets/level-selection-buttons.png) -298px -662px no-repeat; }
+  .cards { display: flex; gap: 28px; justify-content: center; }
+  .card { position: relative; width: 164px; height: 164px; border: 0; padding: 0; cursor: pointer; background: url(assets/sheets/level-selection-buttons.png) no-repeat; }
+  .card.green { background-position: -14px -326px; }
+  .card.grey { background-position: -205px -326px; }
+  .card > span:first-child { position: absolute; left: 0; right: 0; top: 40px; font: bold 46px system-ui, sans-serif; color: #fff; text-shadow: 0 2px 0 #3e5a1a; }
+  .card .stars { position: absolute; left: 0; right: 0; top: 104px; display: flex; gap: 2px; justify-content: center; }
+  .card .stars img { width: 26px; filter: grayscale(1) opacity(.35); }
+  .card .stars img.on { filter: none; }
+  .card.locked { background-position: -205px -326px; cursor: default; }
+  .card.locked > span { display: none; }
+  .card.locked::after { content: ''; position: absolute; left: 50%; top: 50%; width: 46px; height: 55px; transform: translate(-50%, -50%); background: url(assets/sheets/level-selection-buttons.png) 0 -256px / 512px 408px no-repeat; }
+  #stars { display: flex; gap: 6px; justify-content: center; }
+  #stars img { width: 56px; height: auto; filter: grayscale(1) opacity(.35); }
+  #stars img.on { filter: none; }
+  .back { width: 56px; height: 50px; border: 0; background: url(assets/sheets/level-selection-buttons.png) -213px -640px no-repeat; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="game" width="960" height="540"></canvas>
+
+  <div class="hud">
+    <button class="pause" data-action="pause" title="Pause (Esc)" aria-label="Pause">Pause</button>
+    <button class="restart" data-action="restart" title="Restart (R)" aria-label="Restart">Restart</button>
+    <button id="mute" class="mute" data-action="mute" title="Sound (M)" aria-label="Sound">Sound</button>
+  </div>
+
+  <div id="menu" class="overlay show">
+    <div style="display:flex;flex-direction:column;gap:24px;align-items:center">
+      <div class="episode-title" role="heading" aria-label="Select Episode"></div>
+      <div class="cards">
+        <button class="card green" data-action="play" data-level="0"><span>1</span><span class="stars"><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""></span></button>
+        <button class="card green" data-action="play" data-level="1"><span>2</span><span class="stars"><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""></span></button>
+        <button class="card green" data-action="play" data-level="2"><span>3</span><span class="stars"><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""></span></button>
+        <button class="card green" data-action="play" data-level="3"><span>4</span><span class="stars"><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""></span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pause" class="overlay">
+    <div class="panel">
+      <h2>Paused</h2>
+      <button data-action="resume">Resume</button>
+      <button data-action="restart">Restart</button>
+      <button data-action="menu">Menu</button>
+    </div>
+  </div>
+
+  <div id="end" class="overlay">
+    <div class="panel">
+      <h2 id="end-title"></h2>
+      <div id="stars"><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""><img src="assets/hud/star.png" alt=""></div>
+      <p id="end-score"></p>
+      <button id="next" data-action="next">Next level</button>
+      <button data-action="restart">Retry</button>
+      <button data-action="menu">Menu</button>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/matter.min.js"></script>
+<script src="audio.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "First steps",
+      "file": "level-01.json"
+    },
+    {
+      "id": 2,
+      "name": "Bomb",
+      "file": "level-02.json"
+    },
+    {
+      "id": 3,
+      "name": "Towers",
+      "file": "level-03.json"
+    },
+    {
+      "id": 4,
+      "name": "King",
+      "file": "level-04.json"
+    },
+    {
+      "id": 5,
+      "name": "Level 5",
+      "file": "level-05.json"
+    },
+    {
+      "id": 6,
+      "name": "Level 6",
+      "file": "level-06.json"
+    },
+    {
+      "id": 7,
+      "name": "Level 7",
+      "file": "level-07.json"
+    },
+    {
+      "id": 8,
+      "name": "Level 8",
+      "file": "level-08.json"
+    },
+    {
+      "id": 9,
+      "name": "Level 9",
+      "file": "level-09.json"
+    },
+    {
+      "id": 10,
+      "name": "Level 10",
+      "file": "level-10.json"
+    },
+    {
+      "id": 11,
+      "name": "Level 11",
+      "file": "level-11.json"
+    },
+    {
+      "id": 12,
+      "name": "Level 12",
+      "file": "level-12.json"
+    },
+    {
+      "id": 13,
+      "name": "Level 13",
+      "file": "level-13.json"
+    },
+    {
+      "id": 14,
+      "name": "Level 14",
+      "file": "level-14.json"
+    },
+    {
+      "id": 15,
+      "name": "Level 15",
+      "file": "level-15.json"
+    },
+    {
+      "id": 16,
+      "name": "Level 16",
+      "file": "level-16.json"
+    },
+    {
+      "id": 17,
+      "name": "Level 17",
+      "file": "level-17.json"
+    },
+    {
+      "id": 18,
+      "name": "Level 18",
+      "file": "level-18.json"
+    },
+    {
+      "id": 19,
+      "name": "Level 19",
+      "file": "level-19.json"
+    },
+    {
+      "id": 20,
+      "name": "Level 20",
+      "file": "level-20.json"
+    },
+    {
+      "id": 21,
+      "name": "Level 21",
+      "file": "level-21.json"
+    },
+    {
+      "id": 22,
+      "name": "Level 22",
+      "file": "level-22.json"
+    },
+    {
+      "id": 23,
+      "name": "Level 23",
+      "file": "level-23.json"
+    },
+    {
+      "id": 24,
+      "name": "Level 24",
+      "file": "level-24.json"
+    },
+    {
+      "id": 25,
+      "name": "Level 25",
+      "file": "level-25.json"
+    },
+    {
+      "id": 26,
+      "name": "Level 26",
+      "file": "level-26.json"
+    },
+    {
+      "id": 27,
+      "name": "Level 27",
+      "file": "level-27.json"
+    },
+    {
+      "id": 28,
+      "name": "Level 28",
+      "file": "level-28.json"
+    },
+    {
+      "id": 29,
+      "name": "Level 29",
+      "file": "level-29.json"
+    },
+    {
+      "id": 30,
+      "name": "Level 30",
+      "file": "level-30.json"
+    }
+  ]
+}
